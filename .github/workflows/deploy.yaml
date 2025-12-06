@@ -1,0 +1,35 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy'
+        required: true
+        type: string
+
+jobs:
+  gate:
+    name: 🚦 Approve (${{ matrix.environment }})
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [lab, dev, qs, prod]
+    steps:
+      - name: Approved
+        run: echo "Deployment to ${{ matrix.environment }} approved"
+
+  deploy:
+    name: Deploy (${{ matrix.environment }})
+    needs: gate
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [lab, dev, qs, prod]
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: ${{ matrix.environment }}
+      version: ${{ inputs.version }}
+    secrets: inherit

@@ -1,0 +1,121 @@
+name: Deploy Environment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: string
+
+jobs:
+  documentation:
+    name: 📝 Create Documentation
+    runs-on: ubuntu-latest
+    if: inputs.environment == 'prod'
+    steps:
+      - name: Generate deployment documentation
+        run: |
+          echo "TODO: Generate deployment documentation"
+          # - Create changelog
+          # - Document deployed version
+          # - Create release notes
+
+      - name: Publish documentation
+        run: |
+          echo "TODO: Publish documentation"
+          # - Upload to wiki/confluence/etc.
+
+  read-secrets:
+    name: 🔐 Read Secrets
+    runs-on: ubuntu-latest
+    needs: documentation
+    # `if` directive allows non-prod environments to continue even if the prerequisite documentation job is skipped.
+    # https://docs.github.com/de/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds
+    if: ${{ !failure() && !cancelled() }}
+    steps:
+      - name: Fetch credentials from Vault
+        run: |
+          echo "TODO: Fetch credentials from HashiCorp Vault"
+          # uses: hashicorp/vault-action@v3
+
+      - name: Upload kubeconfig as artifact
+        run: |
+          echo "TODO: Upload kubeconfig as artifact"
+          # uses: actions/upload-artifact@v4
+          # with:
+          #   name: kubeconfig-${{ inputs.environment }}
+          #   retention-days: 1
+
+  build-manifests:
+    name: 📦 Build Manifests
+    runs-on: ubuntu-latest
+    needs: read-secrets
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Render Kubernetes manifests
+        run: |
+          echo "TODO: Render Helm templates for ${{ inputs.environment }}"
+          # helm template --values values-${{ inputs.environment }}.yaml ...
+
+      - name: Upload rendered manifests
+        run: |
+          echo "TODO: Upload manifests as artifact"
+          # uses: actions/upload-artifact@v4
+          # with:
+          #   name: manifests-${{ inputs.environment }}
+          #   retention-days: 1
+
+  install-external-secrets:
+    name: 🔑 Install External Secrets
+    runs-on: ubuntu-latest
+    needs: build-manifests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download kubeconfig
+        run: |
+          echo "TODO: Download kubeconfig artifact"
+          # uses: actions/download-artifact@v4
+
+      - name: Download manifests
+        run: |
+          echo "TODO: Download manifests artifact"
+          # uses: actions/download-artifact@v4
+
+      - name: Install External Secrets Operator
+        run: |
+          echo "TODO: Install External Secrets Operator"
+
+      - name: Verify installation
+        run: |
+          echo "TODO: Verify External Secrets Operator is running"
+
+  install-neo4j:
+    name: 🗄️ Install Neo4j
+    runs-on: ubuntu-latest
+    needs: install-external-secrets
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download kubeconfig
+        run: |
+          echo "TODO: Download kubeconfig artifact"
+          # uses: actions/download-artifact@v4
+
+      - name: Download manifests
+        run: |
+          echo "TODO: Download manifests artifact"
+          # uses: actions/download-artifact@v4
+
+      - name: Install Neo4j
+        run: |
+          echo "TODO: Install Neo4j"
+
+      - name: Verify installation
+        run: |
+          echo "TODO: Verify Neo4j is running"
