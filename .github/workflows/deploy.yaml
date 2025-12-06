@@ -2,11 +2,6 @@ name: Deploy to Kubernetes
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to deploy'
-        required: true
-        type: string
 
 jobs:
   gate:
@@ -31,5 +26,4 @@ jobs:
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: ${{ matrix.environment }}
-      version: ${{ inputs.version }}
     secrets: inherit
