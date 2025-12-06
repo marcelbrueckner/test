@@ -2,28 +2,100 @@ name: Deploy to Kubernetes
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-  gate:
-    name: 🚦 Approve (${{ matrix.environment }})
+  # ============================================================================
+  # LAB
+  # ============================================================================
+  deploy-lab-gate:
+    name: 🚦 Approve (lab)
     runs-on: ubuntu-latest
-    environment: ${{ matrix.environment }}
-    strategy:
-      fail-fast: false
-      matrix:
-        environment: [lab, dev, qs, prod]
+    environment: lab
     steps:
       - name: Approved
-        run: echo "Deployment to ${{ matrix.environment }} approved"
+        run: echo "Deployment to lab approved"
 
-  deploy:
-    name: Deploy (${{ matrix.environment }})
-    needs: gate
-    strategy:
-      fail-fast: false
-      matrix:
-        environment: [lab, dev, qs, prod]
+  deploy-lab:
+    name: 🚀 Deploy (lab)
+    needs: deploy-lab-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
-      environment: ${{ matrix.environment }}
+      environment: lab
+    secrets: inherit
+
+  # ============================================================================
+  # DEV
+  # ============================================================================
+  deploy-dev-gate:
+    name: 🚦 Approve (dev)
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Approved
+        run: echo "Deployment to dev approved"
+
+  deploy-dev:
+    name: 🚀 Deploy (dev)
+    needs: deploy-dev-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: dev
+    secrets: inherit
+
+  # ============================================================================
+  # QS
+  # ============================================================================
+  deploy-qs-gate:
+    name: 🚦 Approve (qs)
+    runs-on: ubuntu-latest
+    environment: qs
+    steps:
+      - name: Approved
+        run: echo "Deployment to qs approved"
+
+  deploy-qs:
+    name: 🚀 Deploy (qs)
+    needs: deploy-qs-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: qs
+    secrets: inherit
+
+  # ============================================================================
+  # PROD
+  # ============================================================================
+  deploy-prod-gate:
+    name: 🚦 Approve (prod)
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Approved
+        run: echo "Deployment to prod approved"
+
+  deploy-prod-documentation:
+    name: 📝 Documentation (prod)
+    runs-on: ubuntu-latest
+    needs: deploy-prod-gate
+    steps:
+      - name: Generate deployment documentation
+        run: |
+          echo "TODO: Generate deployment documentation"
+          # - Create changelog
+          # - Document deployed version
+          # - Create release notes
+
+      - name: Publish documentation
+        run: |
+          echo "TODO: Publish documentation"
+          # - Upload to wiki/confluence/etc.
+
+  deploy-prod:
+    name: 🚀 Deploy (prod)
+    needs: deploy-prod-documentation
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: prod
     secrets: inherit
