@@ -9,9 +9,30 @@ on:
         type: string
 
 jobs:
+  documentation:
+    name: 📝 Create Documentation
+    runs-on: ubuntu-latest
+    if: inputs.environment == 'prod'
+    steps:
+      - name: Generate deployment documentation
+        run: |
+          echo "TODO: Generate deployment documentation"
+          # - Create changelog
+          # - Document deployed version
+          # - Create release notes
+
+      - name: Publish documentation
+        run: |
+          echo "TODO: Publish documentation"
+          # - Upload to wiki/confluence/etc.
+
   read-secrets:
     name: 🔐 Read Secrets
     runs-on: ubuntu-latest
+    needs: documentation
+    # `if` directive allows non-prod environments to continue even if the prerequisite job is skipped.
+    # https://docs.github.com/de/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds
+    if: ${{ !failure() && !cancelled() }}
     steps:
       - name: Fetch credentials from Vault
         run: |
@@ -30,6 +51,7 @@ jobs:
     name: 📦 Build Manifests
     runs-on: ubuntu-latest
     needs: read-secrets
+    if: ${{ !failure() && !cancelled() }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,6 +73,7 @@ jobs:
     name: 🔑 Install External Secrets
     runs-on: ubuntu-latest
     needs: build-manifests
+    if: ${{ !failure() && !cancelled() }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -77,6 +100,7 @@ jobs:
     name: 🗄️ Install Neo4j
     runs-on: ubuntu-latest
     needs: install-external-secrets
+    if: ${{ !failure() && !cancelled() }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
