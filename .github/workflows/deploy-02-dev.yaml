@@ -1,0 +1,27 @@
+# ============================================================================
+# DEV
+# ============================================================================
+name: Deploy DEV
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-02-dev-gate:
+    name: 🚦 DEV Approval Gate
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Approved
+        run: echo "Deployment to dev approved"
+
+  deploy-02-dev:
+    name: 🚀 DEV Deploy
+    needs: deploy-02-dev-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: dev
+    secrets: inherit

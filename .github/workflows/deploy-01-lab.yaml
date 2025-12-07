@@ -1,0 +1,27 @@
+# ============================================================================
+# LAB
+# ============================================================================
+name: Deploy LAB
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-01-lab-gate:
+    name: 🚦 LAB Approval Gate
+    runs-on: ubuntu-latest
+    environment: lab
+    steps:
+      - name: Approved
+        run: echo "Deployment to lab approved"
+
+  deploy-01-lab:
+    name: 🚀 LAB Deploy
+    needs: deploy-01-lab-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: lab
+    secrets: inherit

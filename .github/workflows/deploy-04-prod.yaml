@@ -1,0 +1,27 @@
+# ============================================================================
+# PROD
+# ============================================================================
+name: Deploy PROD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-04-prod-gate:
+    name: 🚦 PROD Approval Gate
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Approved
+        run: echo "Deployment to prod approved"
+
+  deploy-04-prod:
+    name: 🚀 PROD Deploy
+    needs: deploy-04-prod-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: prod
+    secrets: inherit

@@ -1,0 +1,27 @@
+# ============================================================================
+# QS
+# ============================================================================
+name: Deploy QS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-03-qs-gate:
+    name: 🚦 QS Approval Gate
+    runs-on: ubuntu-latest
+    environment: qs
+    steps:
+      - name: Approved
+        run: echo "Deployment to qs approved"
+
+  deploy-03-qs:
+    name: 🚀 QS Deploy
+    needs: deploy-03-qs-gate
+    uses: ./.github/workflows/deploy-environment.yaml
+    with:
+      environment: qs
+    secrets: inherit
