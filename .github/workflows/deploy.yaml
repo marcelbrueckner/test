@@ -11,7 +11,7 @@ jobs:
   # LAB
   # ============================================================================
   deploy-01-lab-gate:
-    name: 🚦 01 Approve (lab)
+    name: 🚦 LAB Approval Gate
     runs-on: ubuntu-latest
     environment: lab
     steps:
@@ -19,7 +19,7 @@ jobs:
         run: echo "Deployment to lab approved"
 
   deploy-01-lab:
-    name: 🚀 Deploy (lab)
+    name: 🚀 LAB Deploy
     needs: deploy-01-lab-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
@@ -30,7 +30,7 @@ jobs:
   # DEV
   # ============================================================================
   deploy-02-dev-gate:
-    name: 🚦 02 Approve (dev)
+    name: 🚦 DEV Approval Gate
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -38,7 +38,7 @@ jobs:
         run: echo "Deployment to dev approved"
 
   deploy-02-dev:
-    name: 🚀 Deploy (dev)
+    name: 🚀 DEV Deploy
     needs: deploy-02-dev-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
@@ -49,7 +49,7 @@ jobs:
   # QS
   # ============================================================================
   deploy-03-qs-gate:
-    name: 🚦 Approve (qs)
+    name: 🚦 QS Approval Gate
     runs-on: ubuntu-latest
     environment: qs
     steps:
@@ -57,7 +57,7 @@ jobs:
         run: echo "Deployment to qs approved"
 
   deploy-03-qs:
-    name: 🚀 Deploy (qs)
+    name: 🚀 QS Deploy
     needs: deploy-03-qs-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
@@ -68,7 +68,7 @@ jobs:
   # PROD
   # ============================================================================
   deploy-04-prod-gate:
-    name: 🚦 Approve (prod)
+    name: 🚦 PROD Approval Gate
     runs-on: ubuntu-latest
     environment: prod
     steps:
@@ -76,7 +76,7 @@ jobs:
         run: echo "Deployment to prod approved"
 
   deploy-04-prod:
-    name: 🚀 Deploy (prod)
+    name: 🚀 PROD Deploy
     needs: deploy-04-prod-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
