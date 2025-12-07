@@ -11,7 +11,7 @@ jobs:
   # LAB
   # ============================================================================
   deploy-lab-gate:
-    name: 🚦 Approve (lab)
+    name: 🚦 01 Approve (lab)
     runs-on: ubuntu-latest
     environment: lab
     steps:
@@ -30,7 +30,7 @@ jobs:
   # DEV
   # ============================================================================
   deploy-dev-gate:
-    name: 🚦 Approve (dev)
+    name: 🚦 02 Approve (dev)
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -48,7 +48,7 @@ jobs:
   # ============================================================================
   # QS
   # ============================================================================
-  deploy-qs-gate:
+  deploy-cs-gate:
     name: 🚦 Approve (qs)
     runs-on: ubuntu-latest
     environment: qs
@@ -58,7 +58,7 @@ jobs:
 
   deploy-qs:
     name: 🚀 Deploy (qs)
-    needs: deploy-qs-gate
+    needs: deploy-cs-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: qs
