@@ -31,6 +31,7 @@ jobs:
   # ============================================================================
   deploy-02-dev-gate:
     name: 🚦 DEV Approval Gate
+    needs: deploy-01-lab
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -50,6 +51,7 @@ jobs:
   # ============================================================================
   deploy-03-qs-gate:
     name: 🚦 QS Approval Gate
+    needs: deploy-02-dev
     runs-on: ubuntu-latest
     environment: qs
     steps:
@@ -69,6 +71,7 @@ jobs:
   # ============================================================================
   deploy-04-prod-gate:
     name: 🚦 PROD Approval Gate
+    needs: deploy-03-qs
     runs-on: ubuntu-latest
     environment: prod
     steps:
