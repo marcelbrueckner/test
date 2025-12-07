@@ -48,7 +48,7 @@ jobs:
   # ============================================================================
   # QS
   # ============================================================================
-  deploy-cs-gate:
+  deploy-03-qs-gate:
     name: 🚦 Approve (qs)
     runs-on: ubuntu-latest
     environment: qs
@@ -56,9 +56,9 @@ jobs:
       - name: Approved
         run: echo "Deployment to qs approved"
 
-  deploy-qs:
+  deploy-03-qs:
     name: 🚀 Deploy (qs)
-    needs: deploy-cs-gate
+    needs: deploy-03-qs-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: qs
@@ -67,7 +67,7 @@ jobs:
   # ============================================================================
   # PROD
   # ============================================================================
-  deploy-prod-gate:
+  deploy-04-prod-gate:
     name: 🚦 Approve (prod)
     runs-on: ubuntu-latest
     environment: prod
@@ -75,9 +75,9 @@ jobs:
       - name: Approved
         run: echo "Deployment to prod approved"
 
-  deploy-prod:
+  deploy-04-prod:
     name: 🚀 Deploy (prod)
-    needs: deploy-prod-gate
+    needs: deploy-04-prod-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: prod
