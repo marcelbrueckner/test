@@ -10,7 +10,7 @@ jobs:
   # ============================================================================
   # LAB
   # ============================================================================
-  deploy-lab-gate:
+  deploy-01-lab-gate:
     name: 🚦 01 Approve (lab)
     runs-on: ubuntu-latest
     environment: lab
@@ -18,9 +18,9 @@ jobs:
       - name: Approved
         run: echo "Deployment to lab approved"
 
-  deploy-lab:
+  deploy-01-lab:
     name: 🚀 Deploy (lab)
-    needs: deploy-lab-gate
+    needs: deploy-01-lab-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: lab
@@ -29,7 +29,7 @@ jobs:
   # ============================================================================
   # DEV
   # ============================================================================
-  deploy-dev-gate:
+  deploy-02-dev-gate:
     name: 🚦 02 Approve (dev)
     runs-on: ubuntu-latest
     environment: dev
@@ -37,9 +37,9 @@ jobs:
       - name: Approved
         run: echo "Deployment to dev approved"
 
-  deploy-dev:
+  deploy-02-dev:
     name: 🚀 Deploy (dev)
-    needs: deploy-dev-gate
+    needs: deploy-02-dev-gate
     uses: ./.github/workflows/deploy-environment.yaml
     with:
       environment: dev
